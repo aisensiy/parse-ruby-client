@@ -196,7 +196,7 @@ To help with storing array data, there are three operations that can be used to 
 Each method takes an array of objects to add or remove in the "objects" key. For example, we can add items to the set-like "skills" field like so:
 
 ```ruby
-game_score = Parse::Query.new("GameScore").eq("objectId", "5iEEIxM4MW").get.first
+game_score = Parse.get("GameScore", "5iEEIxM4MW")
 game_score.array_add_unique("skills", ["flying", "kungfu"])
 game_score.save
 puts game_score["skills"]
@@ -213,8 +213,8 @@ This will return:
 In order to update Relation types, Parse provides special operators to atomically add and remove objects to a relation. So, we can add an object to a relation like so:
 
 ```ruby
-game_score = Parse::Query.new("GameScore").eq("objectId", "5iEEIxM4MW").get.first
-player = Parse::Query.new("Player").eq("objectId", "GLtvtEaGKa").get.first
+game_score = Parse.get("GameScore", "5iEEIxM4MW")
+player = Parse.get("Player", "GLtvtEaGKa")
 game_score.array_add_relation("opponents", player.pointer)
 game_score.save
 game_score["opponents"] #=> #<Parse::ArrayOp:0x007fbe98931508 @operation="AddRelation", @objects=[Player:GLtvtEaGKa]>
@@ -232,7 +232,7 @@ To remove an object from a relation, you can do:
 To delete an object from the Parse Cloud, call `Parse::Object#parse_delete`. For example:
 
 ```ruby
-game_score = Parse::Query.new("GameScore").eq("objectId", "5iEEIxM4MW").get.first
+game_score = Parse.get("GameScore", "5iEEIxM4MW")
 game_score.parse_delete
 Parse::Query.new("GameScore").eq("objectId", "5iEEIxM4MW").get.length #=> 0
 ```
